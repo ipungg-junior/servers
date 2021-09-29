@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="app">
+  <div class="main-wrapper">
+    <!-- NAVBAR -->
+    <div class="navbar-bg"></div>
+    <nav class="navbar navbar-expand-lg main-navbar" style="justify-content: flex-end;">
+
+      <!-- Notif & profile -->
+      <ul class="navbar-nav navbar-right">        
+        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="/homepage/suratmasuk/" class="dropdown-item has-icon">
+              Surat Masuk
+            </a>
+            <a href="/homepage/suratkeluar" class="dropdown-item has-icon">
+              Surat Keluar
+            </a>
+            <a href="" class="dropdown-item has-icon">
+              Pengaturan Akun
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+      <!-- NAVBAR -->
+
+    </nav>
+      <div class="main-content" style="padding-left: 30px">
+      <section class="section">
+        <div class="section-header">
+          <a href="/homepage/suratkeluar" class="btn text-white fa fa-arrow-left bg-primary" style="font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
+          <h1 style="font-size: 30px;">&nbsp;Back</h1>
+        </div>
+        <div class="row">
+
+            <div class="row w-75 mb-5" style="margin-top: 1em;">
+                <embed src="{{file.file.url}}#view=fit" type="application/pdf" width="10px" height="720px">
+            </div>
+
+        </div>
+        </section>
+
+
+        
+<!-- General JS Scripts -->
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+
+<!-- JS Libraies -->
+
+<!-- Template JS File -->
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'bootstrap/js/custom.js' %}"></script>
+<script src="{% static 'bootstrap/js/index.js' %}"></script>
+
+
+
+{% endblock %}

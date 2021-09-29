@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="app">
+  <div class="main-wrapper">
+    <!-- NAVBAR -->
+    <div class="navbar-bg"></div>
+    <nav class="navbar navbar-expand-lg main-navbar" style="justify-content: flex-end;">
+
+      <!-- Notif & profile -->
+      <ul class="navbar-nav navbar-right">        
+        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="/homepage/suratmasuk/" class="dropdown-item has-icon">
+              Surat Masuk
+            </a>
+            <a href="/homepage/suratkeluar" class="dropdown-item has-icon">
+              Surat Keluar
+            </a>
+            <a href="" class="dropdown-item has-icon">
+              Pengaturan Akun
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+      <!-- NAVBAR -->
+
+    </nav>
+      <div class="main-content" style="padding-left: 30px">
+      <section class="section">
+        <div class="section-header">
+          <a href="/homepage/suratmasuk" class="btn text-white fa fa-arrow-left bg-primary" style="max-width: 40px; max-height: 35px; font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
+          <h1 style="font-size: 30px;">&nbsp;Back</h1>
+        </div>
+
+
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group" style="white-space: initial; position: relative;">
+              {% for i in file %}
+              <a href="/homepage/download/{{i.file}}" class="btn p-1 bg-success text-white" style="word-break: break-all;"><span class="fa fa-download">&nbsp;{{i.file}}</span></a>
+              {% endfor %}
+            </div>
+            <div class="form-group">
+              <label for="namaBerkas" style="font-size: 17px;">Judul Surat</label>
+              <input type="text" class="form-control" id="department" placeholder="{{ surat.fileName }}" disabled>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="noSurat" style="font-size: 17px;">Nomor Surat</label>
+                <input type="text" class="form-control" id="department" placeholder="{{surat.nomor_surat}}" disabled>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="perihal" style="font-size: 17px;">Perihal</label>
+                <textarea type="text" class="form-control" style="white-space:pre-line; position:relative;" id="department" placeholder="{{surat.perihal}}" disabled></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="tipe-berkas" style="font-size: 17px;">Tipe Berkas</label>
+                <input type="text" class="form-control" id="department" placeholder="{{surat.get_typeBerkas_display}}" disabled>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="jenis-berkas" style="font-size: 17px;">Jenis Berkas</label>
+                <input type="text" class="form-control" id="department" placeholder="{{surat.jenisBerkas}}" disabled>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="sender" style="font-size: 17px;">Pengirim</label>
+                <input type="text" class="form-control" id="department" placeholder="{{surat.sender}}" disabled>
+              </div>
+              <div class="form-group col-md-6">
+                  <label for="addressSender" style="font-size: 17px;">Alamat</label>
+                  <input type="text" class="form-control" id="department" placeholder="{{surat.address_sender}}" disabled>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                  <label for="uploadFor" style="font-size: 17px;">Dibaca oleh</label>
+                  <div class="row">
+                    {% for i in surat.reader.all %}
+                    <a>{{i.firstName}} {{i.lastName}}</a>
+                    {% endfor %}
+                  </div>
+            </div>
+
+            <div class="row">
+              <div class="row justify-content-end mb-0">
+                <div class="col-md-12">
+                  <div class="font-size: 20px;">Disetujui oleh:</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  {% for person in surat.approve_by.all %}
+
+                  <span class="badge" style="position: relative; max-width: 150px; padding: 3px; font-size: 20px;">
+                    <svg class="barcode"
+                      jsbarcode-format="CODE128"
+                      jsbarcode-value="{{ person.qr_code }}"
+                      jsbarcode-textmargin="3"
+                      jsbarcode-width="2"
+                      jsbarcode-text="{{ person.lastName }}">
+                    </svg>
+                  </span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+              <div class="form-group mt-4">
+                <label for="uploadFor" style="font-size: 20px;">Catatan</label>
+                <div class="row">
+                  {% for i in note_list %}
+                    {%for name in i.user.all %}
+                    <a><strong>({{name.role}}) {{name.firstName}} {{name.lastName}}</strong> : {{i.note}}</a>
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+            
+      </div>
+
+
+             {% if selfApprove == True %}
+                <a style="margin-left: 1em;">Anda sudah approve</a>
+             {% else %}
+              <div class="row" style="margin-top: 2em;">
+                <form action="/approve/{{surat.url}}" method='POST'>
+                  {% csrf_token %}
+                  {{ form_note }}
+                  <div class="row mt-4 justify-content-center">
+                    <button class="btn btn-primary w-50" type="submit">Approve</button>
+                  </div>
+                </form>
+              </div>
+              {% endif %}
+        </div>
+      </section>
+
+
+        
+<!-- General JS Scripts -->
+<script>
+  JsBarcode(".barcode").init();
+</script>
+<!-- General JS Scripts -->
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+
+<!-- JS Libraies -->
+
+<!-- Template JS File -->
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'bootstrap/js/custom.js' %}"></script>
+<script src="{% static 'bootstrap/js/index.js' %}"></script>
+
+
+
+{% endblock %}

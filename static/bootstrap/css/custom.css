@@ -1,0 +1,29 @@
+body #paper{
+    height: 70vh; 
+    margin-top: 5em;
+}
+
+body #content {
+    background-image: linear-gradient(rgb(235, 235, 235),rgb(212, 212, 212));
+    width: 475px;
+    margin-top: 1.5em;
+    padding-left: 2.5em;
+    padding-right: 2.5em;
+    max-height: 340px;
+    border-radius: 25px 25px;
+}
+
+body .row h6{
+    height: 50px;
+    margin-top: 1.5em;
+}
+
+@media only screen and (max-width: 640px) {
+    body #content {
+        width: 430px;       
+    }
+    body .btn {
+        width: 120px;
+        height: 50px;
+    }
+}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="app">
+  <section class="section">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+
+
+          <div class="card card-danger" style="margin-top: 4rem;">
+            <div class="card-header"><h4 style="color: rgb(230, 0, 0);">SUPERUSER</h4></div>
+
+            <div class="card-body">
+              <form method="POST" action="" class="needs-validation" novalidate="">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="passcode" style="font-size: 15px;">Kode Akses</label>
+                  <input id="passcode" type="password" class="form-control text-center" name="passcode" tabindex="1" required autofocus>
+                  <div class="invalid-feedback">
+                    Isi kode administrator!
+                  </div>
+                </div>
+
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-danger btn-lg btn-block" style="font-size: 15px;" tabindex="4">
+                    Masuk sebagai administrator
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="simple-footer">
+            Copyright &copy; Kearsipan 2021
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- General JS Scripts -->
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+
+  <!-- JS Libraies -->
+
+  <!-- Template JS File -->
+  <script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+  <script src="{% static 'bootstrap/js/custom.js' %}"></script>
+{% endblock %}

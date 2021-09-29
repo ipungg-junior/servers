@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="app">
+  <div class="main-wrapper">
+    <!-- NAVBAR -->
+    <div class="navbar-bg mr-auto"></div>
+    <nav class="navbar navbar-expand-lg main-navbar">
+      <!-- Search element -->
+      <form class="form-inline mr-auto">
+        <ul class="navbar-nav mr-3">
+          <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+          <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+        </ul>
+      </form>
+      <!-- Notif & profile -->
+      <ul class="navbar-nav navbar-right">
+       
+        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          
+          <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">Administrator</div></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-divider"></div>
+            <a href="/super/logout/" class="dropdown-item has-icon text-danger">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+      <!-- NAVBAR -->
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main-sidebar">
+      <aside id="sidebar-wrapper">
+        <div class="sidebar-brand mt-4">
+          <a href="/super/homepage"><i class="fas fa-home"><br><br><span>Dinas Sosial</span></i></a>
+        </div>
+
+        <!-- SIDEBAR -->
+        <ul class="sidebar-menu">
+          <li class="menu-header">MENU</li>
+          <li class="nav-item dropdown">
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-edit"></i><span>Surat</span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link active" href="/super/homepage/suratmasuk/">Input Surat Masuk</a></li>
+              <li><a class="nav-link" href="/super/homepage/suratkeluar/">Input Surat Keluar</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-cog"></i><span>Data Sistem</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link active" href="/super/homepage/department/">Department</a></li>
+                <li><a class="nav-link" href="/super/homepage/user/">User</a></li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i><span>Laporan Surat</span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link" href="/super/report/suratmasuk/">Surat Masuk</a></li>
+              <li><a class="nav-link" href="/super/report/suratkeluar/">Surat Keluar</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- END SIDEBAR -->
+        
+      </aside>
+    </div>
+    <div class="main-content">
+      <section class="section">
+        <div class="section-header">
+          <a href="/super/homepage" class="btn text-white fa fa-arrow-left bg-primary" style="max-width: 40px; max-height: 35px; font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
+          <h1 style="font-size: 30px;">&nbsp;Back</h1>
+        </div>
+        
+        <div class="row">
+          <div class="card">
+              <div class="card-header">
+              <h4 style="font-size: 22px;">Edit Surat Masuk</h4>
+              </div>
+
+              <div class="card-body">
+                <div class="form-group" style="white-space: initial; position: relative;">
+                  {% for i in file %}
+                  <a href="/homepage/download/{{i.file}}" class="btn p-1 bg-success text-white" style="word-break: break-all;"><span class="fa fa-download">&nbsp;{{i.file}}</span></a>
+                  {% endfor %}
+                </div>
+                <div class="form-group">
+                  <label for="namaBerkas" style="font-size: 17px;">Judul Surat</label>
+                  <input type="text" class="form-control" id="department" placeholder="{{ surat.fileName }}" disabled>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="noSurat" style="font-size: 17px;">Nomor Surat</label>
+                    <input type="text" class="form-control" id="department" placeholder="{{surat.nomor_surat}}" disabled>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="perihal" style="font-size: 17px;">Perihal</label>
+                    <textarea type="text" class="form-control" id="department" placeholder="{{surat.perihal}}" disabled></textarea>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="tipe-berkas" style="font-size: 17px;">Tipe Berkas</label>
+                    <input type="text" class="form-control" id="department" placeholder="{{surat.typeBerkas}}" disabled>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="jenis-berkas" style="font-size: 17px;">Jenis Berkas</label>
+                    <input type="text" class="form-control" id="department" placeholder="{{surat.jenisBerkas}}" disabled>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="sender" style="font-size: 17px;">Pengirim</label>
+                    <input type="text" class="form-control" id="department" placeholder="{{surat.sender}}" disabled>
+                  </div>
+                  <div class="form-group col-md-6">
+                      <label for="addressSender" style="font-size: 17px;">Alamat</label>
+                      <input type="text" class="form-control" id="department" placeholder="{{surat.address_sender}}" disabled>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                      <label for="department" style="font-size: 17px;">Department</label>
+                      <div class="row">
+                        {% for i in surat.department.all %}
+                        <a>{{ i.departementName }}</a>
+                        {% endfor %}
+                      </div>  
+                  </div>
+                  <div class="form-group col-md-6">
+                      <label for="uploadFor" style="font-size: 17px;">Kirim Kepada</label>
+                      <div class="row">
+                        {% for i in surat.upload_for.all %}
+                        <a>{{i.firstName}} {{i.lastName}}</a>
+                        {% endfor %}
+                      </div>
+                </div>
+
+                <div class="form-row mb-4">
+                  <div class="form-group">
+                  
+                    <label for="department" style="font-size: 17px;">Disetujui oleh</label>
+                    <div class="row">
+                      <div class="col-md-12">
+                        {% for person in surat.approve_by.all %}
+
+                        <span class="badge" styDisetujui oleh:le="position: relative; max-width: 150px; padding: 3px; font-size: 20px;">
+                          <svg class="barcode"
+                            jsbarcode-format="CODE128"
+                            jsbarcode-value="{{ person.qr_code }}"
+                            jsbarcode-textmargin="3"
+                            jsbarcode-width="2"
+                            jsbarcode-text="{{ person.lastName }}">
+                          </svg>
+                        </span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              
+              <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+                <div class="form-group mt-4">
+                  <label for="file" style="font-size: 17px;">Tambahkan File</label>
+                  {{ form_file.files }}
+                  <div class="row justify-content-center mt-4">
+                    <button type="submit" class="btn btn-primary w-25">Tambah File</button>
+                  </div>
+                </div>
+              </form>
+              <form action="" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="noSurat" style="font-size: 17px;">Tambahkan tujuan</label>
+                  {{ form_edit.upload_for }}
+                  <div class="row justify-content-center mt-4">
+                    <button class="btn btn-primary w-25">Tambah Tujuan</button>
+                  </div>
+                </div>
+              </form>
+          </div>
+      </div>
+              
+      </section>
+    </div>
+  </div>
+</div>
+<script>
+  JsBarcode(".barcode").init();
+</script>
+<!-- General JS Scripts -->
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+
+<!-- JS Libraies -->
+
+<!-- Template JS File -->
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'bootstrap/js/custom.js' %}"></script>
+<script src="{% static 'bootstrap/js/index.js' %}"></script>
+
+
+
+{% endblock %}

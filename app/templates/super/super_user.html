@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="app">
+  <div class="main-wrapper">
+    <!-- NAVBAR -->
+    <div class="navbar-bg mr-auto"></div>
+    <nav class="navbar navbar-expand-lg main-navbar">
+      <!-- Search element -->
+      <form class="form-inline mr-auto">
+        <ul class="navbar-nav mr-3">
+          <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+          <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+        </ul>
+      </form>
+      <!-- Notif & profile -->
+      <ul class="navbar-nav navbar-right">
+       
+        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          
+          <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">Administrator</div></a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-divider"></div>
+            <a href="/super/logout/" class="dropdown-item has-icon text-danger">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+      <!-- NAVBAR -->
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main-sidebar">
+      <aside id="sidebar-wrapper">
+        <div class="sidebar-brand mt-4">
+          <a href="/super/homepage"><i class="fas fa-home"><br><br><span>Dinas Sosial</span></i></a>
+        </div>
+
+        <!-- SIDEBAR -->
+        <ul class="sidebar-menu">
+          <li class="menu-header">MENU</li>
+          <li class="nav-item dropdown">
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-edit"></i><span>Surat</span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link active" href="/super/homepage/suratmasuk/">Input Surat Masuk</a></li>
+              <li><a class="nav-link" href="/super/homepage/suratkeluar/">Input Surat Keluar</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+              <a href="" class="nav-link has-dropdown"><i class="fas fa-cog"></i><span>Data Sistem</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link active" href="/super/homepage/department/">Department</a></li>
+                <li><a class="nav-link" href="/super/homepage/user/">User</a></li>
+              </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i><span>Laporan Surat</span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link" href="/super/report/suratmasuk/">Surat Masuk</a></li>
+              <li><a class="nav-link" href="/super/report/suratkeluar/">Surat Keluar</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- END SIDEBAR -->
+        
+      </aside>
+    </div>
+    <div class="main-content">
+      <section class="section">
+        <div class="section-header">
+          <a href="/super/homepage" class="btn text-white fa fa-arrow-left bg-primary" style="max-width: 40px; max-height: 35px; font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
+          <h1 style="font-size: 30px;">&nbsp;Back</h1>
+        </div>
+
+        <div class="row ms-auto justify-content-end mb-4" style="margin-right: 1em;">
+            <a href="/super/homepage/user/register/" class="btn btn-success" style="width: 200px;">Buat Pengguna</a>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="section-title mt-0 mb-3" style="font-size: 18px;">Pengguna</div>
+                
+                <div class="row">
+                  <div class="col-lg-12 mb-4">
+                    <table class="table table-hover table-responsive-sm table-responsive-md" style="min-width: 100%; margin-top: -34px;">
+                      <thead>
+                        <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">Username</th>
+                          <th scope="col">Nama Lengkap</th>
+                          <th scope="col">NIK</th>
+                          <th scope="col" style="min-width: 140px;">QR-CODE</th>
+                          <th scope="col">Role</th>
+                          <th scope="col" colspan="3" class="text-center">action</th>
+                          <br>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in user_list %}
+                        <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td>{{ i.username }}</td>
+                          <td>{{ i.firstName}} {{i.lastName}} </td>
+                          <td>{{ i.nik }} </td>
+                          <td>{{ i.qr_code}} </td>
+                          {%for d in i.department.all%}
+                            {% if d.departementID == 'DLT' %}
+                            <td class="text-danger">Belum ditempatkan</td>
+                            {% else %}
+                            <td>{{ i.role }} di {{d.departementName}} </td>
+                            {% endif %}
+                          {% endfor %}
+                          <td style="min-width: 150px;">
+                            
+                            <div class="form-row">
+                              <form action="/super/edit/user/{{i.username}}" method="GET">
+                                <a style="width: auto; margin-right: 0.3em;">
+                                  <input type="hidden" name="edit-id" value="{{i.filename}}">
+                                  <button class="btn bg-primary text-white"  style="width: auto;">
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
+                                  </button>
+                                </a>
+                              </form>
+                              <form action="/downlink/{{i.username}}" method="POST">
+                                <a style="width: auto; margin-right: 0.2em;">
+                                  <input type="hidden" name="delete-id" value="{{i.filename}}">
+                                  <button class="btn bg-danger text-white"  style="width: auto;" type="submit">
+                                    <i class="fa fa-trash-alt white" aria-hidden="true"></i>
+                                  </button>
+                                </a>
+                              </form>
+                            </div>
+
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="section-title mt-4 mb-3" style="font-size: 18px;">Pengguna non aktif</div>
+                <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-hover table-responsive-sm table-responsive-md" style="min-width: 100%; margin-top: -34px;">
+                        <thead>
+                          <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Nama Lengkap</th>
+                            <th scope="col">NIK</th>
+                            <th scope="col" style="min-width: 140px;">QR-CODE</th>
+                            <th scope="col">Role</th>
+                            <th scope="col" colspan="3" class="text-center">action</th>
+                            <br>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for i in user_deactivate %}
+                          <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.username }}</td>
+                            <td>{{ i.firstName}} {{i.lastName}} </td>
+                            <td>{{ i.nik }} </td>
+                            <td>{{ i.qr_code}} </td>
+                            {%for d in i.department.all%}
+                              {% if d.departementID == 'DLT' %}
+                              <td class="text-danger">Belum ditempatkan</td>
+                              {% else %}
+                              <td>{{ i.role }} di {{d.departementName}} </td>
+                              {% endif %}
+                          {% endfor %}
+                            <td style="min-width: 150px;">
+                              
+                              <div class="form-row justify-content-center">
+                                <form action="/uplink/{{i.username}}" method="POST">
+                                  <a style="width: auto; margin-right: 0.2em;">
+                                    <input type="hidden" name="up-id" value="{{i.username}}">
+                                    <button class="btn bg-success text-white"  style="width: auto;" type="submit">
+                                      <i class="white" aria-hidden="true">UP</i>
+                                    </button>
+                                  </a>
+                                </form>
+                              </div>
+  
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- General JS Scripts -->
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+
+<!-- JS Libraies -->
+
+<!-- Template JS File -->
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'bootstrap/js/custom.js' %}"></script>
+<script src="{% static 'bootstrap/js/index.js' %}"></script>
+
+
+
+{% endblock %}

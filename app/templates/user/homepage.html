@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {%load static%}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+          <!-- General CSS Files -->
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap4.min.css' %}" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <!-- <link rel="stylesheet" href="{% static 'bootstrap/css/all.css' %}" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> -->
+        
+        <!-- Bootstrap CSS -->
+        <link href="{% static 'bootstrap/css/bootstrap5.min.css' %}" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/custom.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/styledivisi.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/components.css' %}">
+        <title>Management</title>
+    </head>
+  <body style="font-size: 18px;">
+
+{% block content %}
+<div id="app">
+  <div class="main-wrapper">
+    <!-- NAVBAR -->
+    <div class="navbar-bg"></div>
+    <nav class="navbar navbar-expand-lg main-navbar"  >
+      <a href="/homepage/" class="h4 mr-auto text-white" style="text-decoration: none;padding-left: 16px;">Company</a>
+      <!-- Search element -->
+      <form class="form-inline ms-auto">
+        <ul class="navbar-nav mr-3">
+          <!-- <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li> -->
+          <!-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> -->
+        </ul>
+
+      <!-- Notif & profile -->
+      <ul class="navbar-nav navbar-right">
+        {% if notifications_list.count != 0 %}
+        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+          <div class="dropdown-menu dropdown-list dropdown-menu-right">
+            <div class="dropdown-header">Pemberitahuan</div>
+            <div class="dropdown-list-content dropdown-list-icons">
+              {% for i in notifications_list %}
+              <a href="/homepage/suratmasuk/{{i.url}}" class="dropdown-item">
+                <div class="dropdown-item-icon bg-info text-white">
+                  <i class="fas fa-bell"></i>
+                </div>
+                <div class="dropdown-item-desc">
+                    {{i.fileName}}
+                  <div class="time">{{ i.created_at }}</div>
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+          </div>      
+          {% else %}
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"><i class="far fa-bell"></i></a>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+              <div class="dropdown-header">Pemberitahuan</div>
+              <div class="dropdown-list-content dropdown-list-icons"> 
+                {% for i in notifications_list %}
+                <a href="/homepage/suratmasuk/{{i.url}}" class="dropdown-item">
+                  <div class="dropdown-item-icon bg-info text-white">
+                    <i class="fas fa-bell"></i>
+                  </div>
+                  <div class="dropdown-item-desc">
+                      {{i.fileName}}
+                    <div class="time">{{ i.created_at }}</div>
+                  </div>
+                </a>
+                {% endfor %}          
+              </div>
+            </div>
+          {% endif %}
+
+        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+          <div class="d-sm-inline-block d-lg-inline-block" style="font-size: 20px;">{{ user.firstName }} {{ user.lastName }}</div>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a href="suratmasuk/" class="dropdown-item has-icon">
+              Surat Masuk
+            </a>
+            <a href="suratkeluar/" class="dropdown-item has-icon">
+              Surat Keluar
+            </a>
+            <a href="" class="dropdown-item has-icon">
+              Pengaturan Akun
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+      <!-- NAVBAR -->
+
+    </nav>
+      <div class="main-content" style="padding-left: 30px">
+      <section class="section">
+        <div class="section-header">
+          <h1 style="font-size: 30px;">Dashboard</h1>
+        </div>
+        <div class="row justify-content-center">
+          <!-- LOOP BERKAS -->
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 d-flex align-items-stretch">
+            <a href="suratmasuk/" class="card card-statistic-1" style="text-decoration: none;">
+              <div class="card-icon bg-primary text-center">
+                <i class="far fa-square pt-3 m-auto" style="font-size: 50px;"></i>
+              </div>
+              <div class="card-wrap">
+                <div class="card-header">
+                  <h4 style="font-size: 20px; color: rgb(73, 73, 73);">Semua Surat Masuk</h4>
+                </div>
+                <div class="card-body" style="color: rgb(163, 163, 163);font-size: 15px;">
+                  Total : {{ sm_list.count }}
+                </div>
+              </div>
+            </a>
+          </div>
+  
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+            <a href="suratkeluar/" class="card card-statistic-1" style="text-decoration: none;">
+              <div class="card-icon bg-success text-center">
+                <i class="far fa-circle pt-3 m-auto" style="font-size: 50px;"></i>
+              </div>
+              <div class="card-wrap">
+                <div class="card-header">
+                  <h4 style="font-size: 20px; color: rgb(73, 73, 73);">Surat Keluar</h4>
+                </div>
+                <div class="card-body" style="color: rgb(163, 163, 163); font-size: 15px;">
+                  Total : {{ sk_list.count }}
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 d-flex align-items-stretch">
+            <a href="suratberedar/" class="card card-statistic-1" style="text-decoration: none;">
+              <div class="card-icon bg-info text-center text-white">
+                <i class="far fa-star white pt-3 m-auto" style="font-size: 50px;"></i>
+              </div>
+              <div class="card-wrap">
+                <div class="card-header">
+                  <h4 style="font-size: 20px; color: rgb(73, 73, 73);">Surat Beredar</h4>
+                </div>
+                <div class="card-body" style="color: rgb(163, 163, 163);font-size: 15px;">
+                  Total : {{ unapprove.count }}
+                </div>
+              </div>
+            </a>
+          </div>
+  
+  
+          <div class="col-lg-3 col-md-6 col-sm-6 col-12 d-flex align-items-stretch">
+            <a href="arsip/" class="card card-statistic-1" style="text-decoration: none;">
+              <div class="card-icon bg-warning text-center">
+                <i class="far fa-bookmark pt-3 m-auto" style="font-size: 50px;"></i>
+              </div>
+              <div class="card-wrap">
+                <div class="card-header">
+                  <h4 style="font-size: 20px; color: rgb(73, 73, 73);">Arsip</h4>
+                </div>
+                <div class="card-body" style="color: rgb(163, 163, 163);font-size: 15px;">
+                  Total : {{ arsip.count }}
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+
+<!-- General JS Scripts -->
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script> -->
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+
+<!-- JS Libraies -->
+
+<!-- Template JS File -->
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'bootstrap/js/custom.js' %}"></script>
+<script src="{% static 'bootstrap/js/index.js' %}"></script>
+
+
+
+{% endblock %}

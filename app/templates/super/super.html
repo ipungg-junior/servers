@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'super/base.html' %}
 
 {% block content %}
 
@@ -43,6 +43,7 @@
 
 
 <!-- General JS Scripts -->
+{%load static%}
 <script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
 <script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>

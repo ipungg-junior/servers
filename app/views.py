@@ -441,6 +441,7 @@ def rootSuper(request):
             response.set_cookie('master', 55555, max_age=8000)
             return response
         else:
+            print('here')
             return redirect('/super/')
     else:
         resp = render(request, 'super/super.html')
@@ -470,6 +471,7 @@ def rootHomepage(request):
                     if date=='30':
                         reminder = True
                     month = datetime.date.today().strftime('%B')
+                    print('here')
                     return render(request, 'super/super_homepage.html', context={
                         'unapprove_count': len(unapprove_list),
                         'arsip': arsip,

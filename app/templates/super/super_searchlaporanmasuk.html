@@ -64,80 +64,54 @@
           </li>
         </ul>
         <!-- END SIDEBAR -->
-
       </aside>
     </div>
     <div class="main-content">
       <section class="section">
         <div class="section-header">
-          <a href="/super/homepage" class="btn text-white fa fa-arrow-left bg-primary" style="max-width: 40px; max-height: 35px; font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
-          <h1 style="font-size: 30px;">&nbsp;Back</h1>
+          <h1>Dashboard</h1>
         </div>
         <!-- Surat masuk -->
         <div class="row">
           <div class="col-12">
 
+            <div class="row justify-content-center mt-4">
+                <!-- button export -->
+ 
+            </div>
+
             <div class="card">
               <div class="card-body">
-                <div class="section-title mt-0 mb-3" style="font-size: 18px;">Arsip</div>
-
-                <div class="row text-end mb-0">
-                  <div class="col-md-12 text-end d-flex justify-content-end">
-                    <div class="form-group mb-0 pb-0 text-end" style="min-width: 25%;">
-                      <form action="/super/search/arsip/" method="POST" enctype="multipart/form-data">
-                        <div class="input-group mb-0">
-                          <div class="form-row">
-                            <div class="form-group">
-                            {{ form_search.bulan }}
-                            </div>
-                            <div class="form-group">
-                            {{ form_search.perihal }}
-                            </div>
-                          </div>
-                          
-                          <div class="input-group-append">
-                            <button type="submit" class="input-group-text"><i class="fa fa-search"></i></button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+                <div class="section-title mt-0 mb-3" style="font-size: 18px;">Search laporan Surat Masuk ({{month}}, {{year}})</div>
+                <div class="row mb-3 justify-content-end">
+                  <a>Total : {{total}} </a>
                 </div>
-
+                <form action="/super/search/report/suratmasuk/" method="GET">
+                  <button class="btn btn-success mb-3">Download laporan</button>
+                </form>
                 <div class="row">
-                  <div class="col-lg-12 table-responsive">
-                    <table class="table table-hover w-100 table-responsive-sm table-responsive-md " style="margin-top: -20px;">
+                  <div class="col-lg-12">
+                    <table class="table table-hover table-responsive" style="min-width: 100%; margin-top: -34px;">
                       <thead>
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">Judul Surat</th>
                           <th scope="col">Nomor Surat</th>
                           <th scope="col">Perihal</th>
-                          <th scope="col">Kelompok</th>
+                          <th scope="col">Pengirim</th>
                           <th scope="col">Tanggal</th>
-                          <th scope="col" colspan="3" class="text-center">action</th>
                           <br>
                         </tr>
                       </thead>
                       <tbody>
-                        {% for i in arsip %}
+                        {% for i in report_list %}
                         <tr>
-                          <td>{{forloop.counter}}</td>
+                          <td>{{ forloop.counter }}</td>
                           <td>{{ i.fileName }}</td>
                           <td>{{ i.nomor_surat }} </td>
                           <td>{{ i.perihal }} </td>
-                          <td>{{ i.get_group_display }} </td>
+                          <td>{{ i.sender }} </td>
                           <td>{{ i.created_at }} </td>
-                          <td class="text-center" style="min-width: 150px;">
-                              <form action="/super/view/arsip/{{i.url}}" method="GET">
-                                <a style="width: auto; margin: auto;">
-                                  <button class="btn bg-primary text-white"  style="width: auto;">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                  </button>
-                                </a>
-                              </form>
-
-                          </td>
                         </tr>
                         {% endfor %}
                       </tbody>
@@ -152,35 +126,12 @@
               </div>
             </div>
           </div>
-        
-
-{% if arsip.has_other_pages %}
-<div class="row">
-<ul class="pagination justify-content-center">
-  {% if arsip.has_previous %}
-    <li><a href="?page={{ arsip.previous_page_number }}">&laquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&laquo;</span></li>
-  {% endif %}
-  {% for i in arsip.paginator.page_range %}
-    {% if users.number == i %}
-      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-    {% else %}
-      <li><a href="?page={{ i }}">{{ i }}</a></li>
-    {% endif %}
-  {% endfor %}
-  {% if arsip.has_next %}
-    <li><a href="?page={{ arsip.next_page_number }}">&raquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&raquo;</span></li>
-  {% endif %}
-  {% endif %}
-
         </div>
       </section>
     </div>
   </div>
 </div>
+
 {% load static %}
 <!-- General JS Scripts -->
 <script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
@@ -201,7 +152,6 @@
 <script src="{% static 'bootstrap/js/scripts.js' %}"></script>
 <script src="{% static 'bootstrap/js/custom.js' %}"></script>
 <script src="{% static 'bootstrap/js/index.js' %}"></script>
-
 
 
 {% endblock %}

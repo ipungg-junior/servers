@@ -108,6 +108,7 @@ class SuratMasuk(models.Model):
     isArsip = models.BooleanField(default=False)
     status = models.BooleanField(default=True)
 
+
     def __str__(self):
         return self.fileName
 
@@ -146,3 +147,8 @@ class Arsip(models.Model):
     def __str__(self):
         return self.fileName
 
+class TemporaryDownload(models.Model):
+    fileName = models.CharField(max_length=80, null=True)
+
+    def __str__(self):
+        return self.fileName

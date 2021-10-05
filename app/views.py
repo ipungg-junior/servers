@@ -317,11 +317,8 @@ def approve(request, file):
             berkas.save()
 
             fl = File.objects.filter(fileName=berkas.url)
-            print(fl)
             total_target = berkas.upload_for.all().count()
             total_approve = berkas.approve_by.all().count()
-            print(total_target)
-            print(total_approve)
             if (total_target==total_approve):
                 try:
                     ar = Arsip.objects.get(fileName=berkas.fileName)
@@ -337,13 +334,11 @@ def approve(request, file):
                         created_at=(datetime.date.today().strftime('%d/%m/%Y')),
                     )
                     arsip.save()
-                    print('berhasil buat objek arsip')
                     for i in fl:
                         arsip.file_path.add(i)
                         arsip.save()
                     berkas.isArsip = True
                     berkas.save()
-                    print('berhasil save')
                     return redirect('/homepage/')
                 
             else:
@@ -353,7 +348,6 @@ def approve(request, file):
 
 @csrf_exempt
 def delete(request, fl):
-    print(fl)
     status = supervisor.delete(fl)
     return redirect('/super/homepage')
 
@@ -378,38 +372,30 @@ def downlink(request, us):
 @csrf_exempt
 def deleteDepartment(request, dptmn):
     dprtmn = Department.objects.get(departementID=dptmn)
-    # dprtmn.status = False
-    # dprtmn.save()
     default_divisi = Divisi.objects.get(divisiID='DFLT')
     default_department = Department.objects.get(departementID='DLT')
-    included_divisi = dprtmn.divisi_set.all().count()
-        ## Tidak ada divisi didalamnya
-    if (included_divisi==0):
-        user_list = dprtmn.pengguna_set.all()
-        if (user_list.count()==0):
-            dprtmn.delete()
-        else:
-            for i in user_list:
-                i.department.add(default_department)
-                i.department.remove(dprtmn)
-            dprtmn.delete()
-    
-    ## Ada divisi didalamnya
+
+    included_divisi = dprtmn.divisi_set.all()
+    included_user = dprtmn.pengguna_set.all()
+
+    if (included_user.count() == 0):
+        pass
     else:
-        divisi_list = dprtmn.divisi_set.all()
-        for i in divisi_list:
-            user_list = i.pengguna_set.all()    # Ambil pengguna dalam divisi
-            if (user_list.count()==0):
-                i.delete()
+        for user in included_user:
+            current_div = user.divisi.all()[0]
+            if current_div.divisiID == 'DFLT':
+                pass
             else:
-                for user in user_list:          # Ambil user di divisi
-                    current_divisi = user.divisi.all()[0]
-                    current_department = user.department.all()[0]
-                    user.divisi.remove(current_divisi)
-                    user.divisi.add(default_divisi)
-                    user.department.add(default_department)
-                    user.department.remove(current_department)
-                i.delete()
+                user.divisi.add(default_divisi)
+                user.divisi.remove(current_div)
+            user.department.add(default_department)
+            user.department.remove(dprtmn)
+
+    if included_divisi.count() != 0:
+        for i in included_divisi:
+            i.delete()
+        dprtmn.delete()
+    else:
         dprtmn.delete()
     return redirect('/super/homepage/department')
 
@@ -419,7 +405,7 @@ def deleteDivisi(request, dvi):
     divisi = Divisi.objects.get(divisiID=dvi)
     default_divisi = Divisi.objects.get(divisiID='DFLT')
     user_list = divisi.pengguna_set.all()    # Ambil pengguna dalam divisi
-    if (user_list.count()==0):
+    if (user_list.count()==0):          # Kalo tidak ada user terhubung langsung hapus
         divisi.delete()
     else:
         for user in user_list:          # Ambil user di divisi
@@ -441,7 +427,6 @@ def rootSuper(request):
             response.set_cookie('master', 55555, max_age=8000)
             return response
         else:
-            print('here')
             return redirect('/super/')
     else:
         resp = render(request, 'super/super.html')
@@ -471,7 +456,6 @@ def rootHomepage(request):
                     if date=='30':
                         reminder = True
                     month = datetime.date.today().strftime('%B')
-                    print('here')
                     return render(request, 'super/super_homepage.html', context={
                         'unapprove_count': len(unapprove_list),
                         'arsip': arsip,
@@ -483,7 +467,7 @@ def rootHomepage(request):
                         'reminder': reminder,
                     })
                 except:
-                    print('EROR SAAT MENGAMBIL DATA SUPER')
+                    return JsonResponse({'status': '500','info':'Eror mengambil data (views.py 470)'})
             return render(request, 'super/super_homepage.html', context={})
     except:
         return redirect('/super/')
@@ -606,100 +590,38 @@ def rootSearchArsip(request):
     if (request.method=='POST'):
         form = SearchSurat(request.POST)
         arsip_list = Arsip.objects.all()
-        judul = str(form['arsip'].value()).upper()
-        date = str(form['date'].value()).upper()
         month = str(form['bulan'].value()).upper()
         perihal = str(form['perihal'].value()).upper()
-        by_judul = False
-        by_date = False
-        by_month = False
-        by_perihal = False
 
-        if judul!='':
-            by_judul = True
-        if date!='':
-            by_date = True
-        if month!='':
-            by_month = True
-        if perihal!='':
-            by_perihal = True
-
-        if by_month:
-            if by_date:
-                if by_perihal:
-                    print('here')
-                    for l in arsip_list:
-                        if(str(l.created_at[1])=='/'):
-                            if(str(l.created_at[2:4])==month):
-                                list_surat.append(l)
-                        if(str(l.created_at[3:5])==month):
-                            list_surat.append(l)
-                    return render(request, 'super/super_search.html', context={
-                        'list_arsip': list_surat,
-                        'title': 'Arsip'
-                    })
-                else:
-                    pass
-            else:
-                if perihal:
-                    pass
-                else:
-                    pass
-
+        if month == '' and perihal == '':
+            return redirect('/super/homepage/arsip')
         else:
-            if date:
-                if perihal:
-                    pass
-                else:
-                    pass
+            #search by month
+            for i in arsip_list:
+                if ((i.created_at[3:5])==month):
+                    list_surat.append(i)
 
-            else:
-                if perihal:
-                    pass
-                else:
-                    pass
+            if perihal != '':
+                #search by perihal
+                for i in arsip_list:
+                    if (str(i.perihal).__contains__(perihal)):
+                        #check double obj
+                        if len(list_surat) > 1:
+                            coun = 0
+                            for x in list_surat:
+                                coun += 1
+                                if (i.fileName==x.fileName):
+                                    break
+                                else:
+                                    if coun == len(list_surat):
+                                        list_surat.append(i)
+                                    else:
+                                        pass
+                        else:
+                            list_surat.append(i)
+            
+        return JsonResponse({'info': str(list_surat)})
 
-#        Search by date
-#        # if (str(keyword[0:7])=='TANGGAL'):
-#            # for l in arsip_list:
-#                # if(str(l.created_at[1])=='/'):
-#                    # if(str(l.created_at[0:1])==keyword[8:]):
-#                        # list_surat.append(l)
-#                # if(str(l.created_at[0:2])==keyword[8:]):
-#                    # list_surat.append(l)
-#            # return render(request, 'super/super_search.html', context={
-#                # 'list_arsip': list_surat,
-#                # 'title': 'Arsip'
-#            # })
-# #
-#            Search by date
-#        # if (str(keyword[0:5])=='BULAN'):
-#            # for l in arsip_list:
-#                # if(str(l.created_at[1])=='/'):
-#                    # if(str(l.created_at[2:4])==keyword[6:]):
-#                        # list_surat.append(l)
-#                # if(str(l.created_at[3:5])==keyword[6:]):
-#                    # list_surat.append(l)
-#            # return render(request, 'super/super_search.html', context={
-#                # 'list_arsip': list_surat,
-#                # 'title': 'Arsip'
-#            # })
-# #
-#        # if by_judul:
-#            # for d in arsip_list:
-#                # if(str(d.fileName).__contains__(keyword)):
-#                    # list_surat.append(d)
-#        # 
-#        Search by nomor surat
-#        # for x in arsip_list:
-#            # if(str(x.nomor_surat).__contains__(keyword)):
-#                # list_surat.append(x)
-# #
-#        # return render(request, 'super/super_search.html', context={
-#            # 'list_arsip': list_surat,
-#            # 'title': 'Arsip'
-#        # })
-    
     else:
         return JsonResponse({
             'status': '403',
@@ -892,11 +814,6 @@ def rootEditUser(request, nm):
         default_divisi = Divisi.objects.get(divisiID='DFLT')
         department_changes = Department.objects.get(departementID=department)
         divisi_changes = Divisi.objects.get(divisiID=divisi)
-
-
-        print(department)
-        print(divisi)
-
         if department=='DLT':
             current_dp = user.department.all()[0]
             current_dv = user.divisi.all()[0]
@@ -980,35 +897,69 @@ def rootDivisiRegister(request, dpr):
     except:
         return redirect('/super/')
 
-
 @csrf_exempt
-def rootReportMasuk(request):
-    # Ambil bulan sekarang
-    month = datetime.date.today().strftime('%m')
-    year = datetime.date.today().strftime('%Y')
-    # Ambil arsip surat masuk
-    arsip_list = Arsip.objects.filter(group='SM').order_by('-created_at')
-    report = []
-    # cocokan bulan dan tahun di surat, jika cocok masuk list report
-    for i in arsip_list:
-        if (str(i.created_at[1])=='/'):
-            if (str(i.created_at[2:4])==month and str(i.created_at[5:])==year):
-                berkas = SuratMasuk.objects.get(url=i.url)
-                report.append(berkas)
-        if (str(i.created_at[3:5])==month and str(i.created_at[6:])==year):
-            berkas = SuratMasuk.objects.get(url=i.url)
-            report.append(berkas)
+def rootSearchReportMasuk(request):
+    list_surat = []
 
-    if (request.method=='GET'):
-        return render(request, 'super/super_reportmasuk.html', context={
-            'month': str(datetime.date.today().strftime('%B')).lower(),
-            'year': year,
-            'total': len(report),
-            'report_list': report
+    if (request.method=='POST'):
+        form = SearchSurat(request.POST)
+        month = str(form['bulan'].value()).upper()
+        perihal = str(form['perihal'].value()).upper()
+        arsip = Arsip.objects.all().filter(group='SM').order_by('-created_at')
+
+        if (month!=''):
+            if perihal!='':
+                temp = []
+                # ordey by month
+                for l in arsip:
+                    if(str(l.created_at[1])=='/'):
+                        if(str(l.created_at[2:4])==month):
+                            temp.append(l)
+                    if(str(l.created_at[3:5])==month):
+                        temp.append(l)
+                # next sort for perihal
+                for i in temp:
+                    if (str(i.perihal).__contains__(perihal)):
+                        berkas = SuratMasuk.objects.get(url=i.url)
+                        list_surat.append(berkas)
+            else:
+                # ordey by month
+                for l in arsip:
+                    if(str(l.created_at[1])=='/'):
+                        if(str(l.created_at[2:4])==month):
+                            berkas = SuratMasuk.objects.get(url=l.url)
+                            list_surat.append(berkas)
+                    if(str(l.created_at[3:5])==month):
+                        berkas = SuratMasuk.objects.get(url=l.url)
+                        list_surat.append(berkas)
+        else:
+            if perihal=='':
+                return redirect('/super/report/suratmasuk/')
+            else:
+                for i in arsip:
+                    if (str(i.perihal).__contains__(perihal)):
+                        berkas = SuratMasuk.objects.get(url=i.url)
+                        list_surat.append(berkas)
+        
+        for i in list_surat:
+            tmp = TemporaryDownload(fileName=i.fileName)
+            tmp.save()
+
+        return render(request, 'super/super_searchlaporanmasuk.html', context={
+            'month': month,
+            'year': str(datetime.date.today().strftime('%Y')).lower(),
+            'total': len(list_surat),
+            'report_list': list_surat
         })
+
     else:
+        temp_obj = TemporaryDownload.objects.all()
+        temp_list = []
+        for i in temp_obj:
+            berkas = SuratMasuk.objects.get(fileName=i.fileName)
+            temp_list.append(berkas)
         response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = f'attachment; filename="Laporan-surat-masuk-{month}-{year}.xls"'
+        response['Content-Disposition'] = f'attachment; filename="Laporan-surat-masuk.xls"'
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet('Arsip')
         # Sheet header, first row
@@ -1020,7 +971,7 @@ def rootReportMasuk(request):
             ws.write(row_num, col_num, columns[col_num], font_style)
         # Sheet body, remaining rows
         font_style = xlwt.XFStyle()
-        for row in report:
+        for row in temp_list:
             row_num += 1
             for col_num in range(6):
                 if col_num==0:
@@ -1035,12 +986,177 @@ def rootReportMasuk(request):
                     ws.write(row_num, col_num, row.sender, font_style)
                 if col_num==5:
                     ws.write(row_num, col_num, row.created_at, font_style)
-
         wb.save(response)
         return response
 
 @csrf_exempt
+def rootSearchReportKeluar(request):
+    list_surat = []
+
+    if (request.method=='POST'):
+        form = SearchSurat(request.POST)
+        month = str(form['bulan'].value()).upper()
+        perihal = str(form['perihal'].value()).upper()
+        arsip = Arsip.objects.all().filter(group='SK').order_by('-created_at')
+
+        if (month!=''):
+            if perihal!='':
+                temp = []
+                # ordey by month
+                for l in arsip:
+                    if(str(l.created_at[1])=='/'):
+                        if(str(l.created_at[2:4])==month):
+                            temp.append(l)
+                    if(str(l.created_at[3:5])==month):
+                        temp.append(l)
+                # next sort for perihal
+                for i in temp:
+                    if (str(i.perihal).__contains__(perihal)):
+                        berkas = SuratKeluar.objects.get(url=i.url)
+                        list_surat.append(berkas)
+            else:
+                # ordey by month
+                for l in arsip:
+                    if(str(l.created_at[1])=='/'):
+                        if(str(l.created_at[2:4])==month):
+                            berkas = SuratKeluar.objects.get(url=l.url)
+                            list_surat.append(berkas)
+                    if(str(l.created_at[3:5])==month):
+                        berkas = SuratKeluar.objects.get(url=l.url)
+                        list_surat.append(berkas)
+        else:
+            if perihal=='':
+                return redirect('/super/report/suratkeluar/')
+            else:
+                for i in arsip:
+                    if (str(i.perihal).__contains__(perihal)):
+                        berkas = SuratKeluar.objects.get(url=i.url)
+                        list_surat.append(berkas)
+        
+        for i in list_surat:
+            try:
+                cek = TemporaryDownload.objects.get(fileName=i.fileName)
+            except:
+                tmp = TemporaryDownload(fileName=i.fileName)
+                tmp.save()
+
+        return render(request, 'super/super_searchlaporankeluar.html', context={
+            'month': month,
+            'year': str(datetime.date.today().strftime('%Y')).lower(),
+            'total': len(list_surat),
+            'report_list': list_surat
+        })
+
+    else:
+        temp_obj = TemporaryDownload.objects.all()
+        temp_list = []
+        for i in temp_obj:
+            berkas = SuratKeluar.objects.get(fileName=i.fileName)
+            temp_list.append(berkas)
+        
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="Laporan-surat-keluar.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Arsip')
+        # Sheet header, first row
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        columns = ['No', 'Judul Surat', 'Nomor Surat', 'Perihal', 'Penerima', 'Tanggal']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+        for row in temp_list:
+            row_num += 1
+            for col_num in range(6):
+                if col_num==0:
+                    ws.write(row_num, col_num, row_num, font_style)
+                if col_num==1:
+                    ws.write(row_num, col_num, row.fileName, font_style)
+                if col_num==2:
+                    ws.write(row_num, col_num, row.nomor_surat, font_style)
+                if col_num==3:
+                    ws.write(row_num, col_num, row.perihal, font_style)
+                if col_num==4:
+                    ws.write(row_num, col_num, row.destination, font_style)
+                if col_num==5:
+                    ws.write(row_num, col_num, row.created_at, font_style)
+        wb.save(response)
+        return response
+
+@csrf_exempt
+def rootReportMasuk(request):
+    temp_obj = TemporaryDownload.objects.all()
+    for o in temp_obj:
+        o.delete()
+    # Ambil bulan sekarang
+    month = datetime.date.today().strftime('%m')
+    year = datetime.date.today().strftime('%Y')
+    # Ambil arsip surat masuk
+    arsip_list = Arsip.objects.filter(group='SM').order_by('-created_at')
+    report = []
+
+    # cocokan bulan dan tahun di surat, jika cocok masuk list report
+    for i in arsip_list:
+        if (str(i.created_at[1])=='/'):
+            if (str(i.created_at[2:4])==month and str(i.created_at[5:])==year):
+                berkas = SuratMasuk.objects.get(url=i.url)
+                report.append(berkas)
+        if (str(i.created_at[3:5])==month and str(i.created_at[6:])==year):
+            berkas = SuratMasuk.objects.get(url=i.url)
+            report.append(berkas)
+
+    if (request.method=='GET'):
+        form = SearchSurat()
+        return render(request, 'super/super_reportmasuk.html', context={
+            'form': form,
+            'month': str(datetime.date.today().strftime('%B')).lower(),
+            'year': year,
+            'total': len(report),
+            'report_list': report
+        })
+    else:
+        if (len(report)>0):
+            response = HttpResponse(content_type='application/ms-excel')
+            response['Content-Disposition'] = f'attachment; filename="Laporan-surat-masuk-{month}-{year}.xls"'
+            wb = xlwt.Workbook(encoding='utf-8')
+            ws = wb.add_sheet('Arsip')
+            # Sheet header, first row
+            row_num = 0
+            font_style = xlwt.XFStyle()
+            font_style.font.bold = True
+            columns = ['No','Judul Surat', 'Nomor Surat', 'Perihal', 'Pengirim', 'Tanggal']
+            for col_num in range(len(columns)):
+                ws.write(row_num, col_num, columns[col_num], font_style)
+            # Sheet body, remaining rows
+            font_style = xlwt.XFStyle()
+            for row in report:
+                row_num += 1
+                for col_num in range(6):
+                    if col_num==0:
+                        ws.write(row_num, col_num, row_num, font_style)
+                    if col_num==1:
+                        ws.write(row_num, col_num, row.fileName, font_style)
+                    if col_num==2:
+                        ws.write(row_num, col_num, row.nomor_surat, font_style)
+                    if col_num==3:
+                        ws.write(row_num, col_num, row.perihal, font_style)
+                    if col_num==4:
+                        ws.write(row_num, col_num, row.sender, font_style)
+                    if col_num==5:
+                        ws.write(row_num, col_num, row.created_at, font_style)
+
+            wb.save(response)
+            return response
+        else:
+            pass
+    
+@csrf_exempt
 def rootReportKeluar(request):
+    temp_obj = TemporaryDownload.objects.all()
+    for o in temp_obj:
+        o.delete()
     # Ambil bulan sekarang
     month = datetime.date.today().strftime('%m')
     year = datetime.date.today().strftime('%Y')
@@ -1056,46 +1172,50 @@ def rootReportKeluar(request):
         if (str(i.created_at[3:5])==month and str(i.created_at[6:])==year):
             berkas = SuratKeluar.objects.get(url=i.url)
             report.append(berkas)
-
     if (request.method=='GET'):
+        form = SearchSurat()
         return render(request, 'super/super_reportkeluar.html', context={
+            'form': form,
             'month': str(datetime.date.today().strftime('%B')).lower(),
             'year': year,
             'total': len(report),
             'report_list': report
         })
     else:
-        response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = f'attachment; filename="Laporan-surat-keluar-{month}-{year}.xls"'
-        wb = xlwt.Workbook(encoding='utf-8')
-        ws = wb.add_sheet('Arsip')
-        # Sheet header, first row
-        row_num = 0
-        font_style = xlwt.XFStyle()
-        font_style.font.bold = True
-        columns = ['No', 'Judul Surat', 'Nomor Surat', 'Perihal', 'Penerima', 'Tanggal']
-        for col_num in range(len(columns)):
-            ws.write(row_num, col_num, columns[col_num], font_style)
-        # Sheet body, remaining rows
-        font_style = xlwt.XFStyle()
-        for row in report:
-            row_num += 1
-            for col_num in range(6):
-                if col_num==0:
-                    ws.write(row_num, col_num, row_num, font_style)
-                if col_num==1:
-                    ws.write(row_num, col_num, row.fileName, font_style)
-                if col_num==2:
-                    ws.write(row_num, col_num, row.nomor_surat, font_style)
-                if col_num==3:
-                    ws.write(row_num, col_num, row.perihal, font_style)
-                if col_num==4:
-                    ws.write(row_num, col_num, row.destination, font_style)
-                if col_num==5:
-                    ws.write(row_num, col_num, row.created_at, font_style)
+        if (len(report) > 0):
+            response = HttpResponse(content_type='application/ms-excel')
+            response['Content-Disposition'] = f'attachment; filename="Laporan-surat-keluar-{month}-{year}.xls"'
+            wb = xlwt.Workbook(encoding='utf-8')
+            ws = wb.add_sheet('Arsip')
+            # Sheet header, first row
+            row_num = 0
+            font_style = xlwt.XFStyle()
+            font_style.font.bold = True
+            columns = ['No', 'Judul Surat', 'Nomor Surat', 'Perihal', 'Penerima', 'Tanggal']
+            for col_num in range(len(columns)):
+                ws.write(row_num, col_num, columns[col_num], font_style)
+            # Sheet body, remaining rows
+            font_style = xlwt.XFStyle()
+            for row in report:
+                row_num += 1
+                for col_num in range(6):
+                    if col_num==0:
+                        ws.write(row_num, col_num, row_num, font_style)
+                    if col_num==1:
+                        ws.write(row_num, col_num, row.fileName, font_style)
+                    if col_num==2:
+                        ws.write(row_num, col_num, row.nomor_surat, font_style)
+                    if col_num==3:
+                        ws.write(row_num, col_num, row.perihal, font_style)
+                    if col_num==4:
+                        ws.write(row_num, col_num, row.destination, font_style)
+                    if col_num==5:
+                        ws.write(row_num, col_num, row.created_at, font_style)
 
-        wb.save(response)
-        return response
+            wb.save(response)
+            return response
+        else:
+            pass
 
 def rootDetail(request):
     pass
@@ -1104,3 +1224,9 @@ def rootLogout(request):
     resp = redirect('/super')
     resp.delete_cookie('master')
     return resp
+
+def root_downloadbysearch(request):
+    # fl = TemporaryDownload.objects.all()[0]
+    response = HttpResponse(content_type='application/ms-excel')
+    # response['Content-Disposition'] = f'attachment; filename="Laporan-surat-masuk-{month}-{year}.xls"'
+    return response

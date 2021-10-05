@@ -144,8 +144,8 @@
                           <td>{{ i.fileName }}</td>
                           <td>{{ i.created_at }} </td>
                           <td>{{ i.sender }} </td>
-                          <td>{{ i.perihal }} </td>
-                          <td>{{ i.reader.all.count }}/{{i.upload_for.all.count}} </td>
+                          <td>{{ i.perihal|stringformat:".60s" }}</td>
+                          <td>{{ i.reader.all.count }}/{{i.upload_for.all.count}}  {{i.getPerihalCount}} </td>
                           <td>{{ i.approve_by.all.count }}/{{i.upload_for.all.count}} </td>
                           <td style="min-width: 150px;">
                             
@@ -157,16 +157,24 @@
                                   </button>
                                 </a>
                               </form>
-                              <form action="/delete/{{i.url}}" method="GET">
                                 <a style="width: auto; margin-right: 0.2em;">
-                                  <button class="btn bg-danger text-white"  style="width: auto;" type="submit">
+                                  <button id="{{i.url}}" class="btn bg-danger text-white"  style="width: auto;" type="submit">
                                     <i class="fa fa-trash-alt white" aria-hidden="true"></i>
                                   </button>
                                 </a>
-                              </form>
                             </div>
 
                           </td>
+                          <script>
+                            var button = document.getElementById('{{i.url}}');
+                            function del(){
+                              var res = confirm('Konfirmasi hapus - {{i.fileName}} ?');
+                              if (res==true){
+                                window.location = '/delete/{{i.url}}';
+                              }
+                            }
+                            button.addEventListener('click', del);
+                          </script>
                         </tr>
                         {% endfor %}
                       </tbody>

@@ -72,7 +72,7 @@ class PenggunaEdit(forms.ModelForm):
     divisi = forms.ModelChoiceField(queryset=Divisi.objects.all(), to_field_name='divisiID', widget=forms.Select(attrs={'class': 'custom-select'}))
 
 class FormNote(forms.Form):
-    note = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tambahkan catatan...', 'required': False}))
+    note = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tambahkan catatan...', 'required': False}))
 
 
 

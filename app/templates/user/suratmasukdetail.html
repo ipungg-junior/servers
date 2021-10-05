@@ -56,7 +56,7 @@
                 <label for="noSurat" style="font-size: 17px;">Nomor Surat</label>
                 <input type="text" class="form-control" id="department" placeholder="{{surat.nomor_surat}}" disabled>
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-6 overflow-auto">
                 <label for="perihal" style="font-size: 17px;">Perihal</label>
                 <textarea type="text" class="form-control" style="white-space:pre-line; position:relative;" id="department" placeholder="{{surat.perihal}}" disabled></textarea>
               </div>
@@ -92,16 +92,11 @@
                     <a>{{i.firstName}} {{i.lastName}}</a>
                     {% endfor %}
                   </div>
-            </div>
-
-            <div class="row">
-              <div class="row justify-content-end mb-0">
-                <div class="col-md-12">
-                  <div class="font-size: 20px;">Disetujui oleh:</div>
-                </div>
               </div>
-              <div class="row">
-                <div class="col-md-12">
+
+              <div class="form-group col-md-6">
+                <label for="uploadFor" style="font-size: 17px;">Diapprove oleh</label>
+                <div class="row">
                   {% for person in surat.approve_by.all %}
 
                   <span class="badge" style="position: relative; max-width: 150px; padding: 3px; font-size: 20px;">
@@ -116,9 +111,12 @@
                   {% endfor %}
                 </div>
               </div>
+              </div>
             </div>
-          </div>
+            </div>
+              {% if note_list.count == 0 %}
 
+              {% else %}
               <div class="form-group mt-4">
                 <label for="uploadFor" style="font-size: 20px;">Catatan</label>
                 <div class="row">
@@ -128,18 +126,19 @@
                     {% endfor %}
                   {% endfor %}
                 </div>
-            
-      </div>
-
+              </div>
+              {% endif %}
 
              {% if selfApprove == True %}
-                <a style="margin-left: 1em;">Anda sudah approve</a>
+             <div class="row mb-4 justify-content-center">
+               <a style="margin-bottom: 3em;">Anda sudah approve</a>
+             </div>
              {% else %}
               <div class="row" style="margin-top: 2em;">
                 <form action="/approve/{{surat.url}}" method='POST'>
                   {% csrf_token %}
                   {{ form_note }}
-                  <div class="row mt-4 justify-content-center">
+                  <div class="row mt-4 justify-content-center" style="margin-bottom: 3em;">
                     <button class="btn btn-primary w-50" type="submit">Approve</button>
                   </div>
                 </form>
@@ -149,8 +148,6 @@
       </section>
 
 
-        
-<!-- General JS Scripts -->
 <script>
   JsBarcode(".barcode").init();
 </script>

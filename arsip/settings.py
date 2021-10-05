@@ -55,18 +55,17 @@ DATABASES = {
     }
 }
 
-## MIGRASI DATABASE KE postgreSQL
-##
-## DATABASES = {
-##    'default': {
-##        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-##        'NAME': 'NAMA-DATABASE', 
-##        'USER': 'USERNYA', 
-##        'PASSWORD': 'PASSWORDNYA',
-##        'HOST': '127.0.0.1',          # Default ip and port
-##        'PORT': '5432',
-##    }
-##}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'arsip',
+#         'USER': 'admin',
+#         'PASSWORD': 'admin123',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -88,7 +87,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
+USE_TZ = False
 
 # Media dan static files (css/js/image)
 STATIC_URL = '/static/'

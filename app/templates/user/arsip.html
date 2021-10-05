@@ -24,7 +24,7 @@
     <!-- NAVBAR -->
     <div class="navbar-bg"></div>
     <nav class="navbar navbar-expand-lg main-navbar">
-      <a href="/homepage/" class="h4 mr-auto text-white" style="text-decoration: none;padding-left: 16px;">Company</a>
+      <a href="/homepage/" class="h4 mr-auto text-white mt-4" style="text-decoration: none;padding-left: 16px;">Dinas Sosial</a>
       
 
       <!-- Notif & profile -->
@@ -135,8 +135,8 @@
                           <th scope="col">Judul Surat</th>
                           <th scope="col">Nomor Surat</th>
                           <th scope="col">Perihal</th>
-                          <th scope="col">Tipe Berkas</th>
                           <th scope="col">Group</th>
+                          <th scope="col">Tanggal</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -149,8 +149,8 @@
                           <td>{{ i.fileName }}</td>
                           <td>{{ i.nomor_surat}} </td>
                           <td>{{ i.perihal }}</td>
-                          <td>{{ i.typeBerkas}} </td>
                           <td> {{ i.get_group_display }} </td>
+                          <td> {{ i.created_at}} </td>
                           <td><a href="/homepage/arsip/detail/{{i.url}}" class="btn btn-primary" style="max-width: 40px; max-height: 35px;"><i class="fa fa-eye"></i></a></td>
                         </tr>
                         {% else %}
@@ -161,8 +161,8 @@
                           <td>{{ i.fileName }}</td>
                           <td>{{ i.nomor_surat}} </td>
                           <td>{{ i.perihal }}</td>
-                          <td>{{ i.typeBerkas}} </td>
                           <td> {{ i.get_group_display }} </td>
+                          <td>{{ i.created_at }} </td>
                         </tr>
                         {% endif %}
                         {% endfor %}

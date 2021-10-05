@@ -25,6 +25,9 @@ urlpatterns = [
     path('super/register/department/', rootDepartmentRegister),
     path('super/register/divisi/<str:dpr>', rootDivisiRegister),
     path('super/homepage/user/register/', rootUserRegister),
+    path('super/search/report/suratmasuk/', rootSearchReportMasuk),
+    path('super/search/report/suratkeluar/', rootSearchReportKeluar),
+    path('super/download/search/', root_downloadbysearch),
     path('super/logout/', rootLogout),
 
     ## general purpose

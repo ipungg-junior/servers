@@ -85,19 +85,28 @@
                   <div class="card-icon bg-primary text-center text-white">
                     <i class="fas fa-circle white pt-3 m-auto" style="font-size: 50px;"></i>
                   </div>
-                  <div  class="card-wrap">
-                    <div class="card-header">
-                      <h4 style="font-size: 20px; color: rgb(73, 73, 73);">{{ i.departementName }}</h4>
-                    </div>
-                    <div class="card-body" style="color: rgb(163, 163, 163);font-size: 15px;">
-                      Divisi : {{ i.divisi_set.all.count }}
-                    </div>
-                    <div class="card-footer text-end d-flex justify-content-end" style="margin-top: -40px;">
-                          <form action="/delete/department/{{i.departementID}}">
-                          <button onclick="confirm('Apakah anda yakin ingin menghapus department ini?')" class="btn bg-danger text-white fa fa-trash" style="margin-top: 8px;margin-right: 0px; padding: 5px 10px 5px 10px;"  width="20" height="20">
-                          </button>
-                          </form>
-                    </div>
+                  <div class="card-wrap">
+                      <div class="card-header">
+                        <h4 style="font-size: 20px; color: rgb(73, 73, 73);">{{ i.departementName }}</h4>
+                      </div>
+                      <div class="card-body" style="color: rgb(163, 163, 163);font-size: 15px;">
+                        Divisi : {{ i.divisi_set.all.count }}
+                      </div>
+                    
+                      <div class="card-footer text-end d-flex justify-content-end" style="margin-top: -40px;">
+                        <button id="{{i.departementID}}" class="btn bg-danger text-white fa fa-trash" style="margin-top: 8px;margin-right: 0px; padding: 5px 10px 5px 10px;"  width="20" height="20">
+                        </button>
+                        <script>
+                          var button = document.getElementById('{{i.departementID}}');
+                          function del(){
+                            var res = confirm('Konfirmasi hapus - {{i.departementName}}');
+                            if (res==true){
+                              window.location = '/delete/department/{{i.departementID}}';
+                            }
+                          }
+                          button.addEventListener('click', del);
+                        </script>
+                      </div>
                   </div>
                 </a>
             </div>

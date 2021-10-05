@@ -94,10 +94,21 @@
                     </div>
                   </div>
                   <div class="card-footer text-end d-flex justify-content-end" style="margin-top: -40px;">
-                    <form action="/delete/divisi/{{i.divisiID}}" method="GET">
-                        <button onclick="confirm('Apakah anda yakin ingin menghapus department ini?')" class="btn bg-danger text-white fa fa-trash" style="margin-top: 8px;margin-right: 0px; padding: 5px 10px 5px 10px;""  width="20" height="20">
+                        <button id="{{i.url}}" class="btn bg-danger text-white fa fa-trash" style="margin-top: 8px;margin-right: 0px; padding: 5px 10px 5px 10px;"  width="20" height="20">
                         </button>
-                    </form>
+                    <script>
+                      var b = document.getElementById('{{i.url}}');
+                      var l = '/delete/divisi/{{i.divisiID}}';
+                      function del(){
+                        var knfr = confirm('Hapus divisi {{i.divisiName}} ?');
+                        if (knfr==true){
+                          window.location = l;
+                        }
+                      }
+
+                      b.addEventListener('click', del);
+
+                    </script>
                   </div>
                 </a>
             </div>

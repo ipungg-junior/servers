@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#6skp9_zxpu5*xq(0de(mef-_^i^&5w%2dp6_h+dt0q*bhvkze'
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hahahii.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hahahii.herokuapp.com', '192.168.43.153']
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 INSTALLED_APPS = [

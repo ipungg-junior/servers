@@ -22,7 +22,7 @@ class FormSuratMasuk(forms.Form):
     typeBerkas = forms.ChoiceField(choices=TYPE_BERKAS, widget=forms.Select(attrs={'class': 'custom-select'}))
     jenisBerkas = forms.ModelChoiceField(queryset=JenisBerkas.objects.all(), to_field_name="jenisName", widget=forms.Select(attrs={'class': 'custom-select'}))
     upload_for = forms.ModelMultipleChoiceField(queryset=Pengguna.objects.all().filter(status=True), to_field_name="username", widget=forms.SelectMultiple(attrs={'class': 'custom-select'}))
-    created_at = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'value': datenow}))
+    created_at = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': datenow}))
     
 class FormSuratKeluar(forms.Form):
     datenow = datetime.date.today().strftime('%d/%m/%Y')
@@ -34,7 +34,7 @@ class FormSuratKeluar(forms.Form):
     des = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     typeBerkas = forms.ChoiceField(choices=TYPE_BERKAS, widget=forms.Select(attrs={'class': 'custom-select'}))
     jenisBerkas = forms.ModelChoiceField(queryset=JenisBerkas.objects.all(), to_field_name="jenisName", widget=forms.Select(attrs={'class': 'custom-select'}))
-    created_at = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'value': datenow}))
+    created_at = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': datenow}))
     
 class SearchSurat(forms.Form):
     suratmasuk = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Cari Surat Masuk'}))

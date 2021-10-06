@@ -113,7 +113,9 @@ class Supervisor():
         dest = str(form_berkas['address'].value()).upper()
         jenisBerkas = JenisBerkas.objects.get(jenisName=form_berkas['jenisBerkas'].value())
         #created = datetime.date.today().strftime('%d/%m/%Y')
-        created = str(form_berkas['created_at'].value())
+        x = str(form_berkas['created_at'].value()).split('-')
+        re = ' '.join(reversed(x))
+        created = re.replace(' ', '/')
         
         for f in files:
             obj = File(file=f, fileName=url)
@@ -143,7 +145,7 @@ class Supervisor():
         file = []
         department_list = []
         upload_for_list = []
-        fileName = str(form_berkas['fileName'].value()).upper()
+        fileName = str(form_berkas['fileName'].value()).upper().rstrip()
         url = (fileName.replace(' ', '-').lower())
         perihal = str(form_berkas['perihal'].value()).upper()
         nomor_surat = str(form_berkas['nomor_surat'].value()).upper()
@@ -153,7 +155,9 @@ class Supervisor():
         sender = str(form_berkas['sender'].value()).upper()
         jenisBerkas = JenisBerkas.objects.get(jenisName=form_berkas['jenisBerkas'].value())
         #created = datetime.date.today().strftime('%d/%m/%Y')
-        created = str(form_berkas['created_at'].value())
+        x = str(form_berkas['created_at'].value()).split('-')
+        re = ' '.join(reversed(x))
+        created = re.replace(' ', '/')
         department = Department.objects.all()
 
         for user in upload_for:

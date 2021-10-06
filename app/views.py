@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import response
 from django.shortcuts import redirect, render
 from django.http.response import HttpResponse, HttpResponseServerError, JsonResponse, FileResponse
@@ -53,10 +54,13 @@ def login(request):
                 else:
                     return redirect('/homepage')
             else:
-                return redirect('/homepage')
+                return render(request, 'user/login.html', context={
+                    'message': 'Kata sandi salah!'
+                })
         except:
-            # eror data eror
-            return redirect('/homepage')
+            return render(request, 'user/login.html', context={
+                'message': 'Username tidak ditemukan!'
+            })
 
 def logout(request):
     resp = redirect('/login')
@@ -348,7 +352,18 @@ def approve(request, file):
 
 @csrf_exempt
 def delete(request, fl):
-    status = supervisor.delete(fl)
+    surat = SuratMasuk.objects.get(url=fl)
+    fl = File.objects.filter(fileName=fl)
+    note = surat.note.all()
+    if (fl.count() > 1):
+        for i in fl:
+            i.delete()
+    else:
+        fl.delete()  
+    for i in note:
+        i.delete()
+    surat.delete()
+    fl.delete()
     return redirect('/super/homepage')
 
 def deleteArsip(request, fs):
@@ -374,9 +389,10 @@ def deleteDepartment(request, dptmn):
     dprtmn = Department.objects.get(departementID=dptmn)
     default_divisi = Divisi.objects.get(divisiID='DFLT')
     default_department = Department.objects.get(departementID='DLT')
-
+    print(f'{dprtmn} {default_divisi} {default_department}')
     included_divisi = dprtmn.divisi_set.all()
     included_user = dprtmn.pengguna_set.all()
+    print(f'included kelewat semua')
 
     if (included_user.count() == 0):
         pass
@@ -397,6 +413,7 @@ def deleteDepartment(request, dptmn):
         dprtmn.delete()
     else:
         dprtmn.delete()
+    print('SUCCESS SEMUA')
     return redirect('/super/homepage/department')
 
     
@@ -577,7 +594,20 @@ def rootSuratmasuk(request):
                 files = request.FILES.getlist('files')
                 # Buat variable
                 try:
-                    status = supervisor.addSuratMasuk(files, form_berkas)
+                    fileName = str(form_berkas['fileName'].value()).upper().rstrip()
+                    url = fileName.lower().replace(' ', '-')
+                    # cek penamaan judul
+                    try:
+                        obj = SuratMasuk.objects.get(url=url)
+                        msg = "Error : judul surat sudah ada"
+                        print(msg)
+                        return render(request, 'super/super_inputmasuk.html', context={
+                            'form_file' : form_file,
+                            'form_berkas': form_berkas,
+                            'message': msg
+                        })
+                    except:
+                        status = supervisor.addSuratMasuk(files, form_berkas)
                 except:
                     return HttpResponseServerError()
                 return redirect('/super/homepage/')
@@ -681,11 +711,20 @@ def rootSuratkeluar(request):
         form = UploadFileForm(request.POST, request.FILES)
         form_berkas = FormSuratKeluar(request.POST)
         files = request.FILES.getlist('files')
+        fileName = str(form_berkas['fileName'].value()).upper().rstrip()
+        url = fileName.lower().replace(' ', '-')
         # Buat variable
         try:
-            status = supervisor.addSuratKeluar(files, form_berkas)
+            obj = SuratKeluar.objects.get(url=url)
+            msg = "Error : judul surat sudah ada"
+            print(msg)
+            return render(request, 'super/super_inputkeluar.html', context={
+                'form_file' : base_form_file,
+                'form_berkas': form_berkas,
+                'message': msg
+            })
         except:
-            print('error')
+            status = supervisor.addSuratKeluar(files, form_berkas)
         return redirect('/super/homepage')
 
 @csrf_exempt

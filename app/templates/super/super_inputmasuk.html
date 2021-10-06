@@ -96,7 +96,8 @@
                         <label for="created_at" style="font-size: 17px;">Tanggal</label>
                         {{form_berkas.created_at}}
                       </div>
-                      </div>
+
+                  </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-6">
@@ -137,11 +138,14 @@
                         {{form_berkas.upload_for}}
                     </div>
                   </div>
+                  <div class="row" style="margin-left: 0.5em;">
+                    <label style="color: red;">{{message}}</label>
+                  </div>
+                </div>
+                <div class="card-footer text-center mb-4">
+                  <button class="btn btn-primary w-25">Upload</button>
+                </div>
 
-                </div>
-                <div class="card-footer text-center">
-                  <button class="btn btn-primary w-25">Submit</button>
-                </div>
               </form>
             </div>
         </div>
@@ -149,7 +153,9 @@
     </div>
   </div>
 </div>
-{% load static %}
+
+
+{% load static %} 
 <!-- General JS Scripts -->
 <script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
 <script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>

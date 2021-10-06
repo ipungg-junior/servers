@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import BooleanField
 from django.utils import timezone
 
 # Tabel Departemen
@@ -60,7 +59,7 @@ class Pengguna(models.Model):
     status = models.BooleanField(default=True)
 
     def __str__(self):
-        return (f'{self.firstName} {self.lastName} - {self.department.all()[0]}')
+        return (f'{self.firstName} {self.lastName} - [{self.department.all()[0]} - {self.divisi.all()[0].divisiName}]')
 
     def get_department(self):
         if (self.department.count()==1):

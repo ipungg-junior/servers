@@ -10,7 +10,9 @@
 
 
           <div class="card card-primary">
-            <div class="card-header"><h4 style="font-size: 18px;">Login</h4></div>
+            <div class="card-header">
+              <h4 style="font-size: 18px;">Login</h4>
+            </div>
 
             <div class="card-body">
               <form method="POST" action="" class="needs-validation" novalidate="">
@@ -37,6 +39,7 @@
                   <button type="submit" class="btn btn-primary btn-lg btn-block" style="font-size: 15px;" tabindex="4">
                     Masuk
                   </button>
+                    <label style="color: red;">{{message}}</label>
                 </div>
               </form>
             </div>
@@ -57,17 +60,17 @@
 
 <!-- General JS Scripts -->
 {% load static %}
-<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
-  {%load static%}
-  <script src="{% static 'bootstrap/js/stisla.js' %}"></script>
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}" crossorigin="anonymous"></script>
+{%load static%}
+<script src="{% static 'bootstrap/js/stisla.js' %}"></script>
 
-  <!-- JS Libraies -->
+<!-- JS Libraies -->
 
-  <!-- Template JS File -->
-  <script src="{% static 'bootstrap/js/scripts.js' %}"></script>
-  <script src="{% static 'bootstrap/js/custom.js' %}"></script>
+<!-- Template JS File -->
+<script src="{% static 'bootstrap/js/scripts.js' %}"></script>
+<script src="{% static 'bootstrap/js/custom.js' %}"></script>
 {% endblock %}

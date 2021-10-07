@@ -426,8 +426,8 @@ def deleteDivisi(request, dvi):
         divisi.delete()
     else:
         for user in user_list:          # Ambil user di divisi
-            user.divisi.remove(divisi)
             user.divisi.add(default_divisi)
+            user.divisi.remove(divisi)
         divisi.delete()
     return redirect('/super/homepage/department')
   
@@ -840,6 +840,8 @@ def rootUserRegister(request):
 def rootEditUser(request, nm):
 
     user = Pengguna.objects.get(username=nm)
+    current_dp = user.department.all()[0]
+    current_dv = user.divisi.all()[0]
     if request.method == 'POST':
         form = PenggunaEdit(request.POST)
         user.username = str(form['username'].value())
@@ -871,9 +873,9 @@ def rootEditUser(request, nm):
             user.divisi.add(default_divisi)
             return redirect('/super/homepage/user')
         
-        user.department.remove(default_department)
+        user.department.remove(current_dp)
         user.department.add(department_changes)
-        user.divisi.remove(default_divisi)
+        user.divisi.remove(current_dv)
         user.divisi.add(divisi_changes)
         user.save()
         return redirect('/super/homepage/user')

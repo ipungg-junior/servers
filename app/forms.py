@@ -37,13 +37,28 @@ class FormSuratKeluar(forms.Form):
     created_at = forms.DateField(widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'placeholder': datenow}))
     
 class SearchSurat(forms.Form):
+    MONTH = [
+        ('', '--bulan--'),
+        ('01', 'Januari'),
+        ('02', 'Februari'),
+        ('03', 'Maret'),
+        ('04', 'April'),
+        ('05', 'Mei'),
+        ('06', 'Juni'),
+        ('07', 'Juli'),
+        ('08', 'Agustus'),
+        ('09', 'September'),
+        ('10', 'Oktober'),
+        ('11', 'November'),
+        ('12', 'Desember')
+        ]
     suratmasuk = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Cari Surat Masuk'}))
     suratkeluar = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Cari Surat Keluar'}))
     arsip = forms.CharField(required=False,widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Cari Arsip'}))
     judul = forms.CharField(required=False,widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Judul'}))
     date = forms.CharField(required=False,widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Tanggal'}))
-    bulan = forms.CharField(required=False,widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Bulan'}))
     perihal = forms.CharField(required=False,widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'inlineFormInputGroup2', 'placeholder': 'Perihal'}))
+    bulan = forms.ChoiceField(required=False,choices=MONTH, widget=forms.Select(attrs={'class': 'custom-select'}))
 
 class PenggunaRegister(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -73,7 +88,6 @@ class PenggunaEdit(forms.ModelForm):
 
 class FormNote(forms.Form):
     note = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tambahkan catatan...', 'required': False}))
-
 
 
 class FormDepartmentDivisi(forms.Form):

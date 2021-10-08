@@ -10,15 +10,18 @@
       <form class="form-inline mr-auto">
         <ul class="navbar-nav mr-3">
           <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-          <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a>
+          </li>
         </ul>
       </form>
       <!-- Notif & profile -->
       <ul class="navbar-nav navbar-right">
-       
-        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-          
-          <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">Administrator</div></a>
+
+        <li class="dropdown"><a href="#" data-toggle="dropdown"
+            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+
+            <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">Administrator</div>
+          </a>
           <div class="dropdown-menu dropdown-menu-right">
             <div class="dropdown-divider"></div>
             <a href="/super/logout/" class="dropdown-item has-icon text-danger">
@@ -49,11 +52,11 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-              <a href="" class="nav-link has-dropdown"><i class="fas fa-cog"></i><span>Data Sistem</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link active" href="/super/homepage/department/">Department</a></li>
-                <li><a class="nav-link" href="/super/homepage/user/">User</a></li>
-              </ul>
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-cog"></i><span>Data Sistem</span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link active" href="/super/homepage/department/">Department</a></li>
+              <li><a class="nav-link" href="/super/homepage/user/">User</a></li>
+            </ul>
           </li>
           <li class="nav-item dropdown">
             <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i><span>Laporan Surat</span></a>
@@ -76,23 +79,24 @@
           <div class="col-12">
 
             <div class="row justify-content-center mt-4">
-                <!-- button export -->
+              <!-- button export -->
 
             </div>
 
             <div class="card">
               <div class="card-body">
-                <div class="section-title mt-0 mb-3" style="font-size: 18px;">Laporan Surat Masuk ({{month}}, {{year}})</div>
+                <div class="section-title mt-0 mb-3" style="font-size: 18px;">Laporan Surat Masuk ({{month}}, {{year}})
+                </div>
                 <div class="row mb-3 justify-content-end">
                   <a>Total : {{total}} </a>
-              </div>
-              <form action="/super/report/suratmasuk/" method="POST">
+                </div>
+                <form action="/super/report/suratmasuk/" method="POST">
                   <button class="btn btn-success mb-3">Download laporan</button>
-              </form>
-              <form action="/super/search/report/suratmasuk/" method="POST">
-                <div class="form-row justify-content-end mr-3">
+                </form>
+                <form action="/super/search/report/suratmasuk/" method="POST">
+                  <div class="form-row justify-content-end mr-3">
                     <div class="form-group">
-                    {{form.bulan}}
+                      {{form.bulan}}
                     </div>
                     <div class="form-group">
                       {{form.perihal}}
@@ -101,7 +105,7 @@
                       <button class="btn btn-secondary">Cari</button>
                     </div>
                   </div>
-              </form>
+                </form>
                 <div class="row">
                   <div class="col-lg-12">
                     <table class="table table-hover table-responsive" style="min-width: 100%; margin-top: -34px;">
@@ -135,14 +139,14 @@
             </div>
           </div>
         </div>
-     
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+
     </div>
   </div>
+</div>
+</div>
+</section>
+</div>
+</div>
 </div>
 
 
@@ -150,11 +154,11 @@
 
 {% load static %}
 <!-- General JS Scripts -->
-<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}" crossorigin="anonymous"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->

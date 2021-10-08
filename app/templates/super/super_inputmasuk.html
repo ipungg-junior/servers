@@ -10,15 +10,18 @@
       <form class="form-inline mr-auto">
         <ul class="navbar-nav mr-3">
           <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-          <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a>
+          </li>
         </ul>
       </form>
       <!-- Notif & profile -->
       <ul class="navbar-nav navbar-right">
-       
-        <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-          
-          <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">Administrator</div></a>
+
+        <li class="dropdown"><a href="#" data-toggle="dropdown"
+            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+
+            <div class="d-sm-none d-lg-inline-block" style="font-size: 20px;">Administrator</div>
+          </a>
           <div class="dropdown-menu dropdown-menu-right">
             <div class="dropdown-divider"></div>
             <a href="/super/logout/" class="dropdown-item has-icon text-danger">
@@ -31,8 +34,8 @@
     </nav>
 
 
-     <!-- MAIN CONTENT -->
-     <div class="main-sidebar">
+    <!-- MAIN CONTENT -->
+    <div class="main-sidebar">
       <aside id="sidebar-wrapper">
         <div class="sidebar-brand mt-4">
           <a href="/super/homepage"><i class="fas fa-home"><br><br><span>Dinas Sosial</span></i></a>
@@ -49,11 +52,11 @@
             </ul>
           </li>
           <li class="nav-item dropdown">
-              <a href="" class="nav-link has-dropdown"><i class="fas fa-cog"></i><span>Data Sistem</span></a>
-              <ul class="dropdown-menu">
-                <li><a class="nav-link active" href="/super/homepage/department/">Department</a></li>
-                <li><a class="nav-link" href="/super/homepage/user/">User</a></li>
-              </ul>
+            <a href="" class="nav-link has-dropdown"><i class="fas fa-cog"></i><span>Data Sistem</span></a>
+            <ul class="dropdown-menu">
+              <li><a class="nav-link active" href="/super/homepage/department/">Department</a></li>
+              <li><a class="nav-link" href="/super/homepage/user/">User</a></li>
+            </ul>
           </li>
           <li class="nav-item dropdown">
             <a href="" class="nav-link has-dropdown"><i class="fas fa-book"></i><span>Laporan Surat</span></a>
@@ -64,90 +67,91 @@
           </li>
         </ul>
         <!-- END SIDEBAR -->
-        
+
       </aside>
     </div>
     <div class="main-content">
       <section class="section">
         <div class="section-header">
-          <a href="/super/homepage" class="btn text-white fa fa-arrow-left bg-primary" style="max-width: 40px; max-height: 35px; font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
+          <a href="/super/homepage" class="btn text-white fa fa-arrow-left bg-primary"
+            style="max-width: 40px; max-height: 35px; font-size: 20px; padding: 4px 8px 4px 8px"></a></a>
           <h1 style="font-size: 30px;">&nbsp;Back</h1>
         </div>
         <!-- Input Surat masuk -->
         <div class="row">
-            <div class="card">
-                <div class="card-header">
-                <h4 style="font-size: 22px;">Input Surat Masuk</h4>
-                </div>
-
-                <div class="card-body">
-
-                  <form action="" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %} 
-                  <div class="form-group" style="font-size: 15px">
-                      {{form_file}}
-                  </div>
-                      <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="namaBerkas" style="font-size: 17px;">Judul Surat</label>
-                        {{form_berkas.fileName}}
-                      </div>
-                      <div class="form-group">
-                        <label for="created_at" style="font-size: 17px;">Tanggal</label>
-                        {{form_berkas.created_at}}
-                      </div>
-
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="noSurat" style="font-size: 17px;">Nomor Surat</label>
-                      {{form_berkas.nomor_surat}}
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="perihal" style="font-size: 17px;">Perihal</label>
-                      {{form_berkas.perihal}}
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="tipe-berkas" style="font-size: 17px;">Tipe Berkas</label>
-                      {{form_berkas.typeBerkas}}
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="jenis-berkas" style="font-size: 17px;">Jenis Berkas</label>
-                      {{form_berkas.jenisBerkas}}
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="sender" style="font-size: 17px;">Pengirim</label>
-                      {{form_berkas.sender}}
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="addressSender" style="font-size: 17px;">Alamat</label>
-                        {{form_berkas.address_sender}}
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="uploadFor" style="font-size: 17px;">Kirim Kepada</label>
-                        {{form_berkas.upload_for}}
-                    </div>
-                  </div>
-                  <div class="row" style="margin-left: 0.5em;">
-                    <label style="color: red;">{{message}}</label>
-                  </div>
-                </div>
-                <div class="card-footer text-center mb-4">
-                  <button class="btn btn-primary w-25">Upload</button>
-                </div>
-
-              </form>
+          <div class="card">
+            <div class="card-header">
+              <h4 style="font-size: 22px;">Input Surat Masuk</h4>
             </div>
+
+            <div class="card-body">
+
+              <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group" style="font-size: 15px">
+                  {{form_file}}
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="namaBerkas" style="font-size: 17px;">Judul Surat</label>
+                    {{form_berkas.fileName}}
+                  </div>
+                  <div class="form-group">
+                    <label for="created_at" style="font-size: 17px;">Tanggal</label>
+                    {{form_berkas.created_at}}
+                  </div>
+
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="noSurat" style="font-size: 17px;">Nomor Surat</label>
+                    {{form_berkas.nomor_surat}}
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="perihal" style="font-size: 17px;">Perihal</label>
+                    {{form_berkas.perihal}}
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="tipe-berkas" style="font-size: 17px;">Tipe Berkas</label>
+                    {{form_berkas.typeBerkas}}
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="jenis-berkas" style="font-size: 17px;">Jenis Berkas</label>
+                    {{form_berkas.jenisBerkas}}
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="sender" style="font-size: 17px;">Pengirim</label>
+                    {{form_berkas.sender}}
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="addressSender" style="font-size: 17px;">Alamat</label>
+                    {{form_berkas.address_sender}}
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="uploadFor" style="font-size: 17px;">Kirim Kepada</label>
+                    {{form_berkas.upload_for}}
+                  </div>
+                </div>
+                <div class="row" style="margin-left: 0.5em;">
+                  <label style="color: red;">{{message}}</label>
+                </div>
+            </div>
+            <div class="card-footer text-center mb-4">
+              <button class="btn btn-primary w-25">Upload</button>
+            </div>
+
+            </form>
+          </div>
         </div>
       </section>
     </div>
@@ -155,13 +159,13 @@
 </div>
 
 
-{% load static %} 
+{% load static %}
 <!-- General JS Scripts -->
-<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/popper.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}"  crossorigin="anonymous"></script>
-<script src="{% static 'bootstrap/js/moment.min.js' %}"  crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery-3.3.1.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/popper.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/jquery.nicescroll.min.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'bootstrap/js/moment.min.js' %}" crossorigin="anonymous"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> -->

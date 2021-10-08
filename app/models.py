@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+
+
 # Tabel Departemen
 class Department(models.Model):
     departementID = models.CharField(max_length=6, null=False)

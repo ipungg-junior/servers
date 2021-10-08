@@ -1,5 +1,3 @@
-from django.contrib import messages
-from django.http import response
 from django.shortcuts import redirect, render
 from django.http.response import HttpResponse, HttpResponseServerError, JsonResponse, FileResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -10,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import xlwt
-
 
 supervisor = Supervisor()
 
@@ -382,7 +379,7 @@ def downlink(request, us):
     usr = Pengguna.objects.get(username=us)
     usr.status = False
     usr.save()
-    return redirect('/super/homepage/user')
+    return JsonResponse({'status': 200})
 
 @csrf_exempt
 def deleteDepartment(request, dptmn):

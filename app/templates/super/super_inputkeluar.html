@@ -38,11 +38,14 @@
     <div class="main-sidebar">
       <aside id="sidebar-wrapper">
         <div class="sidebar-brand mt-4">
-          <a href="/super/homepage"><i class="fas fa-home"><br><br><span>Dinas Sosial</span></i></a>
+          {% load static%}
+          <div class="row" >
+            <a href="/super/homepage"><img src="{% static 'login/logo.jpeg' %}" width="230px"></a>
+          </div>
         </div>
 
         <!-- SIDEBAR -->
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" style="padding-top: 2em;">
           <li class="menu-header">MENU</li>
           <li class="nav-item dropdown">
             <a href="" class="nav-link has-dropdown"><i class="fas fa-edit"></i><span>Surat</span></a>

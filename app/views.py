@@ -656,25 +656,24 @@ def rootSearchArsip(request):
         })
 
 def rootArsip(request):
-    try:
-        cookie = request.COOKIES['master']
-        if cookie=='55555':
-            arsip_list = Arsip.objects.all().filter(status=True).order_by('-created_at')
-            page = request.GET.get('page', 1)
-            paginator = Paginator(arsip_list, 15)
-            try:
-                arsip_filter = paginator.page(page)
-            except PageNotAnInteger:
-                arsip_filter = paginator.page(1)
-            except EmptyPage:
-                arsip_filter = paginator.page(paginator.num_pages)
-            form_arsip = SearchSurat()
-            return render(request, 'super/super_arsip.html', context={
-                'form_search': form_arsip,
-                'arsip': arsip_filter
-            })
-    except:
-        return redirect('/super/')
+
+    cookie = request.COOKIES['master']
+    if cookie=='55555':
+        arsip_list = Arsip.objects.all().filter(status=True).order_by('-created_at')
+        page = request.GET.get('page', 1)
+        paginator = Paginator(arsip_list, 15)
+        try:
+            arsip_filter = paginator.page(page)
+        except PageNotAnInteger:
+            arsip_filter = paginator.page(1)
+        except EmptyPage:
+            arsip_filter = paginator.page(paginator.num_pages)
+        form_arsip = SearchSurat()
+        print('HERE')
+        return render(request, 'super/super_arsip.html', context={
+            'form_search': form_arsip,
+            'arsip': arsip_filter
+        })
 
 @csrf_exempt
 def rootArsipDetail(request, ar):
